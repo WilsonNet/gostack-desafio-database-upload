@@ -1,9 +1,21 @@
 // import AppError from '../errors/AppError';
 
-import Transaction from '../models/Transaction';
+import Transaction, { TransactionType } from '../models/Transaction';
+
+interface Request {
+  type: 'income' | 'outcome';
+  title: string;
+  category: string;
+  value: number;
+}
 
 class CreateTransactionService {
-  public async execute(): Promise<Transaction> {
+  public async execute({
+    type,
+    title,
+    category,
+    value,
+  }: Request): Promise<Transaction> {
     // TODO
   }
 }

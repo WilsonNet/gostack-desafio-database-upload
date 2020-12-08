@@ -11,6 +11,8 @@ export enum TransactionType {
   INCOME = 'income',
   OUTCOME = 'outcome',
 }
+
+const xd = TransactionType.INCOME.toString();
 @Entity('transactions')
 class Transaction {
   @PrimaryGeneratedColumn('uuid')
