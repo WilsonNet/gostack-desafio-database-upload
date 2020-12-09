@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { TransactionType } from '../models/Transaction';
+import { TransactionEnum } from '../models/Transaction';
 import CreateTransactionService from '../services/CreateTransactionService';
 
 // import TransactionsRepository from '../repositories/TransactionsRepository';
@@ -14,18 +14,23 @@ transactionsRouter.get('/', async (request, response) => {
 
 transactionsRouter.post('/', async (request, response) => {
   // TODO
-  const { title, value, category } = request.body;
-  const type = 'income';
+  try {
+    const { title, value, category } = request.body;
+    const type = 'income';
 
-  const createTransactionService = new CreateTransactionService();
+    const createTransactionService = new CreateTransactionService();
 
-  const transaction = await createTransactionService.execute({
-    title,
-    value,
-    type,
-    category,
-  });
-  response.json(transaction);
+    const transaction = await createTransactionService.execute({
+      title,
+      value,
+      type,
+      category,
+    });
+
+    return response.json(transaction);
+  } catch (error) {
+    return response.json({ error });
+  }
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {

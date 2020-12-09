@@ -7,12 +7,11 @@ import {
 } from 'typeorm';
 import Category from './Category';
 
-export enum TransactionType {
+export enum TransactionEnum {
   INCOME = 'income',
   OUTCOME = 'outcome',
 }
 
-const xd = TransactionType.INCOME.toString();
 @Entity('transactions')
 class Transaction {
   @PrimaryGeneratedColumn('uuid')
@@ -23,10 +22,10 @@ class Transaction {
 
   @Column({
     type: 'enum',
-    enum: TransactionType,
-    default: TransactionType.INCOME,
+    enum: TransactionEnum,
+    default: TransactionEnum.INCOME,
   })
-  type: TransactionType;
+  type: 'income' | 'outcome';
 
   @Column()
   value: number;

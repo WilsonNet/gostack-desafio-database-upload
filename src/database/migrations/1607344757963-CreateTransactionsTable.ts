@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { TransactionType } from '../../models/Transaction';
+import { TransactionEnum } from '../../models/Transaction';
 
 const TABLE_NAME = 'transactions';
 
@@ -25,7 +25,7 @@ export default class CreateTransactionsTable1607344757963
           {
             name: 'type',
             type: 'enum',
-            enum: [TransactionType.INCOME, TransactionType.OUTCOME],
+            enum: [TransactionEnum.INCOME, TransactionEnum.OUTCOME],
             isNullable: false,
           },
           {
