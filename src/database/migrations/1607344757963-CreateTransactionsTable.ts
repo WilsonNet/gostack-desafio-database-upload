@@ -29,6 +29,11 @@ export default class CreateTransactionsTable1607344757963
             isNullable: false,
           },
           {
+            name: 'value',
+            type: 'integer',
+            isNullable: false,
+          },
+          {
             name: 'category_id',
             type: 'varchar',
             isNullable: false,
