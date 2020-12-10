@@ -31,7 +31,7 @@ class CreateTransactionService {
       categoryEntity = categoryRepository.create({
         title: category,
       });
-      await categoryRepository.save(categoryEntity)
+      await categoryRepository.save(categoryEntity);
     } else {
       categoryEntity = checkCategoryExists;
     }
@@ -43,7 +43,7 @@ class CreateTransactionService {
       category_id: categoryEntity.id,
     });
 
-    await transactionRepository.save(transaction)
+    await transactionRepository.save(transaction);
 
     return transaction;
   }
