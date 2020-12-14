@@ -1,12 +1,8 @@
-import { response, Router } from 'express';
-import { getCustomRepository, getRepository } from 'typeorm';
-import Transaction from '../models/Transaction';
+import { Router } from 'express';
+import { getCustomRepository } from 'typeorm';
 import CreateTransactionService from '../services/CreateTransactionService';
 import TransactionsRepository from '../repositories/TransactionsRepository';
-
-// import TransactionsRepository from '../repositories/TransactionsRepository';
-// import DeleteTransactionService from '../services/DeleteTransactionService';
-// import ImportTransactionsService from '../services/ImportTransactionsService';
+import ImportTransactionsService from '../services/ImportTransactionsService';
 
 const transactionsRouter = Router();
 
@@ -23,7 +19,6 @@ transactionsRouter.get('/', async (request, response) => {
 });
 
 transactionsRouter.post('/', async (request, response) => {
-  // TODO
   try {
     const { title, value, category } = request.body;
     const type = 'income';
@@ -56,6 +51,9 @@ transactionsRouter.delete('/:id', async (request, response) => {
 
 transactionsRouter.post('/import', async (request, response) => {
   // TODO
+  const importTransactionService = new ImportTransactionsService();
+  await importTransactionService.execute();
+  response.send();
 });
 
 export default transactionsRouter;
