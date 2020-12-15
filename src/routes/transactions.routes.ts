@@ -13,6 +13,7 @@ transactionsRouter.get('/', async (request, response) => {
     const balance = await transactionsRepository.getBalance();
     return response.json({ transactions, balance });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     return response.json({ error: 'Internal server serror' });
   }
@@ -42,7 +43,7 @@ transactionsRouter.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
     const transactionsRepository = getCustomRepository(TransactionsRepository);
-    const deleteResult = await transactionsRepository.delete({ id });
+    await transactionsRepository.delete({ id });
     return response.json({ message: 'Transaction deleted', status: true });
   } catch (error) {
     return response.json(error);

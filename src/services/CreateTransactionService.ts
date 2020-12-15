@@ -4,7 +4,7 @@ import { getRepository } from 'typeorm';
 import Category from '../models/Category';
 import Transaction from '../models/Transaction';
 
-interface Request {
+export interface Request {
   type: 'income' | 'outcome';
   title: string;
   category: string;
