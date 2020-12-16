@@ -3,6 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import CreateTransactionService from '../services/CreateTransactionService';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import ImportTransactionsService from '../services/ImportTransactionsService';
+import multer from 'multer';
+const upload = multer();
 
 const transactionsRouter = Router();
 
@@ -50,15 +52,12 @@ transactionsRouter.delete('/:id', async (request, response) => {
   }
 });
 
-transactionsRouter.post('/import', async (request, response) => {
+transactionsRouter.post('/import', upload.none(), async (request, response) => {
   // TODO
+  const { file: csvFilePath } = request.body;
   const importTransactionService = new ImportTransactionsService();
-  try {
-    const transactions = await importTransactionService.execute();
-    return response.json(transactions);
-  } catch (error) {
-    return response.json(error);
-  }
+  const transactions = await importTransactionService.execute(csvFilePath);
+  return response.json(transactions);
 });
 
 export default transactionsRouter;

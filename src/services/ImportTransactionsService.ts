@@ -7,12 +7,8 @@ import CreateTransactionService, {
 import Transaction from '../models/Transaction';
 
 class ImportTransactionsService {
-  async execute(): Promise<Transaction[]> {
-    // TODO
+  async execute(csvFilePath: fs.PathLike): Promise<Transaction[]> {
     const createTransactionService = new CreateTransactionService();
-
-    const csvFilePath = path.resolve(__dirname, '..', '..', 'mock', 'test.csv');
-
     const readCSVStream = fs.createReadStream(csvFilePath);
 
     const parseStream = csvParse({
