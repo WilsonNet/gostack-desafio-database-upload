@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
+import multer from 'multer';
 import CreateTransactionService from '../services/CreateTransactionService';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import ImportTransactionsService from '../services/ImportTransactionsService';
-import multer from 'multer';
+
 const upload = multer();
 
 const transactionsRouter = Router();
