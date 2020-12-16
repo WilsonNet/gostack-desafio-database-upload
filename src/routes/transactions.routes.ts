@@ -53,8 +53,12 @@ transactionsRouter.delete('/:id', async (request, response) => {
 transactionsRouter.post('/import', async (request, response) => {
   // TODO
   const importTransactionService = new ImportTransactionsService();
-  await importTransactionService.execute();
-  response.send();
+  try {
+    const transactions = await importTransactionService.execute();
+    return response.json(transactions);
+  } catch (error) {
+    return response.json(error);
+  }
 });
 
 export default transactionsRouter;

@@ -7,7 +7,7 @@ import CreateTransactionService, {
 import Transaction from '../models/Transaction';
 
 class ImportTransactionsService {
-  async execute(): Promise<void> {
+  async execute(): Promise<Transaction[]> {
     // TODO
     const createTransactionService = new CreateTransactionService();
 
@@ -39,9 +39,10 @@ class ImportTransactionsService {
     // eslint-disable-next-line no-console
     console.log(transactionRequests);
 
-    const transactions = await transactionRequests.map(
-      async transactionRequest =>
+    const transactions = await Promise.all(
+      transactionRequests.map(transactionRequest =>
         createTransactionService.execute(transactionRequest),
+      ),
     );
 
     return transactions;
