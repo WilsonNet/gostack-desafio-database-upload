@@ -23,23 +23,18 @@ transactionsRouter.get('/', async (request, response) => {
 });
 
 transactionsRouter.post('/', async (request, response) => {
-  try {
-    const { title, value, category } = request.body;
-    const type = 'income';
+  const { title, value, category, type } = request.body;
 
-    const createTransactionService = new CreateTransactionService();
+  const createTransactionService = new CreateTransactionService();
 
-    const transaction = await createTransactionService.execute({
-      title,
-      value,
-      type,
-      category,
-    });
+  const transaction = await createTransactionService.execute({
+    title,
+    value,
+    type,
+    category,
+  });
 
-    return response.json(transaction);
-  } catch (error) {
-    return response.json({ error });
-  }
+  return response.json(transaction);
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
