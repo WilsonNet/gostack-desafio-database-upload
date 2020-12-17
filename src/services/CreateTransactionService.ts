@@ -1,6 +1,7 @@
 // import AppError from '../errors/AppError';
 
 import { getCustomRepository, getRepository } from 'typeorm';
+import AppError from '../errors/AppError';
 import Category from '../models/Category';
 import Transaction from '../models/Transaction';
 import TransactionsRepository from '../repositories/TransactionsRepository';
@@ -32,7 +33,7 @@ class CreateTransactionService {
     const balanceTotal = balance.total;
 
     if (type === 'outcome' && balanceTotal < value) {
-      throw new Error('Not enough funds');
+      throw new AppError('Not enough funds');
     }
 
     if (!checkCategoryExists) {
