@@ -5,8 +5,9 @@ import path from 'path';
 import CreateTransactionService from '../services/CreateTransactionService';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import ImportTransactionsService from '../services/ImportTransactionsService';
+import uploadConfig from '../config/uploadConfig';
 
-const upload = multer();
+const upload = multer(uploadConfig);
 
 const transactionsRouter = Router();
 
@@ -49,14 +50,16 @@ transactionsRouter.delete('/:id', async (request, response) => {
   }
 });
 
-transactionsRouter.post('/import', upload.none(), async (request, response) => {
-  // TODO
-  // const { file: csvFilePath } = request.body;
-  const csvFilePath = path.resolve(__dirname, 'import_template.csv');
+transactionsRouter.post(
+  '/import',
+  upload.single('file'),
+  async (request, response) => {
+    const csvFilePath = request.file.path;
 
-  const importTransactionService = new ImportTransactionsService();
-  const transactions = await importTransactionService.execute(csvFilePath);
-  return response.json(transactions);
-});
+    const importTransactionService = new ImportTransactionsService();
+    const transactions = await importTransactionService.execute(csvFilePath);
+    return response.json(transactions);
+  },
+);
 
 export default transactionsRouter;
