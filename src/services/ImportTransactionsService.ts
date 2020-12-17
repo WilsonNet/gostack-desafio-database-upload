@@ -5,6 +5,7 @@ import CreateTransactionService, {
   Request as TransactionRequest,
 } from './CreateTransactionService';
 import Transaction from '../models/Transaction';
+import transactionsRouter from '../routes/transactions.routes';
 
 class ImportTransactionsService {
   async execute(csvFilePath: fs.PathLike): Promise<Transaction[]> {
@@ -32,14 +33,28 @@ class ImportTransactionsService {
       parseCSV.on('end', resolve);
     });
 
-    // eslint-disable-next-line no-console
-    console.log(transactionRequests);
+    async function processTransactions(
+      requests: TransactionRequest[],
+      current: number,
+      processedTransactions: Transaction[],
+    ): Promise<Transaction[]> {
+      if (current >= requests.length) {
+        return processedTransactions;
+      }
+      const currentTransaction = transactionRequests[current];
+      const transaction = await createTransactionService.execute(
+        currentTransaction,
+      );
+      const transactionsReturned = processedTransactions.concat(transaction);
+      const nextIndex = current + 1;
+      return processTransactions(
+        transactionRequests,
+        nextIndex,
+        transactionsReturned,
+      );
+    }
 
-    const transactions = await Promise.all(
-      transactionRequests.map(transactionRequest =>
-        createTransactionService.execute(transactionRequest),
-      ),
-    );
+    const transactions = await processTransactions(transactionRequests, 0, []);
 
     return transactions;
   }

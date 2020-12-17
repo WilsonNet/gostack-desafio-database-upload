@@ -52,9 +52,9 @@ class CreateTransactionService {
       category_id: categoryEntity.id,
     });
 
-    await transactionRepository.save(transaction);
+    const transactionResponse = await transactionRepository.save(transaction);
 
-    return transaction;
+    return transactionResponse;
   }
 }
 
