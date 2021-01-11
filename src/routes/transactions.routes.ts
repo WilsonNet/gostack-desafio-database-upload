@@ -6,22 +6,17 @@ import CreateTransactionService from '../services/CreateTransactionService';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import ImportTransactionsService from '../services/ImportTransactionsService';
 import uploadConfig from '../config/uploadConfig';
+import DeleteTransactionService from '../services/DeleteTransactionService';
 
 const upload = multer(uploadConfig);
 
 const transactionsRouter = Router();
 
 transactionsRouter.get('/', async (request, response) => {
-  try {
-    const transactionsRepository = getCustomRepository(TransactionsRepository);
-    const transactions = await transactionsRepository.find();
-    const balance = await transactionsRepository.getBalance();
-    return response.json({ transactions, balance });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return response.json({ error: 'Internal server serror' });
-  }
+  const transactionsRepository = getCustomRepository(TransactionsRepository);
+  const transactions = await transactionsRepository.find();
+  const balance = await transactionsRepository.getBalance();
+  return response.json({ transactions, balance });
 });
 
 transactionsRouter.post('/', async (request, response) => {
@@ -40,14 +35,11 @@ transactionsRouter.post('/', async (request, response) => {
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
-  try {
-    const { id } = request.params;
-    const transactionsRepository = getCustomRepository(TransactionsRepository);
-    await transactionsRepository.delete({ id });
-    return response.json({ message: 'Transaction deleted', status: true });
-  } catch (error) {
-    return response.json(error);
-  }
+  const { id } = request.params;
+  const deleteTransactionService = new DeleteTransactionService();
+  deleteTransactionService.execute(id);
+
+  return response.json({ message: 'Transaction deleted', status: true });
 });
 
 transactionsRouter.post(
