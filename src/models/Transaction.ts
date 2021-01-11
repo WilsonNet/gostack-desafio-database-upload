@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Category from './Category';
@@ -30,7 +31,7 @@ class Transaction {
   @Column()
   value: number;
 
-  @ManyToMany(() => Category)
+  @ManyToOne(() => Category)
   @JoinColumn({ name: 'category_id' })
   @Column()
   category_id: string;
